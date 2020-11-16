@@ -120,6 +120,7 @@
             <br><span id="name-error"></span>
             
         </div>
+        
         <div class="rcorners">
             <!-- TODO: Use a javascript event handler to ensure that passwords are at least 8 characters in length
             and have uppercase, lowercase, and numeric characters -->
@@ -127,13 +128,14 @@
             <input class="form-input-text" 
                    id="pwd"
                    name="pwd"
-                   onblur="passwordChecker(this), upChecker(this), lowChecker(this)";       
+                   onblur="upChecker(this)";       
                    onfocus="console.log(`Entered: ${this.pwd}`)"
                    onmouseover="mouseEnterMessages(this)"
                    onmouseout="mouseOutMessage(this)"                                      
                    type="pwd" 
                    required>
         </div>
+
         <div class="rcorners">
             <!-- TODO: Use a javascript event handler to ensure that the email given is valid 
                 (hint: look for the @ and . characters) -->            
@@ -148,11 +150,14 @@
                    id="email"
                    required>
         </div>        
+
         <div class="rcorners">
             <!-- TODO: Use a javascript event handler to ensure that the phone number given conforms to 
                        the United States format (xxx) xxx-xxxx -->
             <label class="form-label-text" for="tel">Enter a phone number</label>
             <input class="form-input-text" 
+                   onblur="phoneChecker(this)";       
+                   onfocus="console.log(`Entered: ${this.tel}`)"
                    onmouseover="mouseEnterMessages(this)"
                    onmouseout="mouseOutMessage(this)"
                    type="tel" 
@@ -160,11 +165,14 @@
                    id="tel"
                    required>
         </div>
+
         <div id="color-background" class="rcorners">
             <!-- TODO: Use a javascript event handler to make the background of this div change to the
                        selected color -->            
             <label class="form-label-text" for="color">Please select a color</label>
             <input class="form-input-text" 
+                   onblur="colorChecker(this)";       
+                   onfocus="console.log(`Entered: ${this.color}`)"
                    onmouseover="mouseEnterMessages(this)"
                    onmouseout="mouseOutMessage(this)"
                    type="color" 
@@ -172,10 +180,13 @@
                    id="color"
                    required>
         </div>  
+
         <div class="rcorners">
             <!-- TODO: Use a javascript event handler only allow URLs that start with https:// -->                        
             <label class="form-label-text" for="url">Please enter your homepage url: </label>
             <input class="form-input-text"
+                   onblur="urlChecker(this)";       
+                   onfocus="console.log(`Entered: ${this.url}`)"
                    onmouseover="mouseEnterMessages(this)"
                    onmouseout="mouseOutMessage(this)"            
                    type="url" 
@@ -183,9 +194,12 @@
                    name="url"
                    required>
         </div>        
+        
         <div class="rcorners">
             <label class="form-label-text" for="awesome">As a percentage, how awesome are you? </label>
             <input type="range" 
+                   onblur="percentChecker(this)";       
+                   onfocus="console.log(`Entered: ${this.awesome}`)"
                    onmouseover="mouseEnterMessages(this)"
                    onmouseout="mouseOutMessage(this)"            
                    name="awesome" 
@@ -201,7 +215,7 @@
             suggestions: 0-25: Not awesome; 25-50: Kinda awesome; 51-75: Awesome; 76-100: Totally Awesome -->
             <output class="awesome-output"></output>
         </div>
-        <input type="submit" value="submit" onsubmit = "">
+        <input type="submit" value="submit">
     </form>
     <div>
         <p id="show-results">Show results here on form submit</p>
@@ -223,39 +237,135 @@
             }
         }
 
-        const passwordChecker = (el) => 
-        {
-            const messageSpanElement = document.querySelector('#messages');
-            if (el.value.length < 8){
-                messageSpanElement.textContent = "Invalid password: shorter than 8 characters";
-                document.getElementById("pwd").focus();
-            }
-        }
+        // const passwordChecker = (el) => 
+        // {
+        //     const messageSpanElement = document.querySelector('#messages');
+        //     if (el.value.length < 8){
+        //         messageSpanElement.textContent = "Invalid password: shorter than 8 characters";
+        //         document.getElementById("pwd").focus();
+        //     }
+        // }
 
         const upChecker = (el) => 
         {
             const messageSpanElement = document.querySelector('#messages');
-            if (el.value != el.value.isUpperCase())
             {
-                messageSpanElement.textContent = "Invalid password: Does not contain an uppercase character";
-                document.getElementById("pwd").focus();
+                var ch = '';
+                var capitalLetter = false;
+                var lowerLetter = false;
+                var numberChar = false;
+
+                for (var i = 0; i < str.length(); i++) 
+                {
+                    var ch = str.charAt(i);
+                    if (Character.isDigit(ch)) 
+                    {
+                        numberChar = true;
+
+                    }
+                    else if (numberChar == "false")
+                    {
+                        messageSpanElement.textContent = "Invalid password: does not contain a number";
+                        document.getElementById("pwd").focus();
+                    }
+
+                    if (el.value.length < 8)
+                    {
+                        messageSpanElement.textContent = "Invalid password: shorter than 8 characters";
+                        document.getElementById("pwd").focus();
+
+                    }
+                    if (Character.isUpperCase(ch)) 
+                    {
+                        capitalLetter = true;
+
+                    }
+                    else if (capitalLetter == "false")
+                    {
+                        messageSpanElement.textContent = "Invalid password: does not contain a capital character";
+                        document.getElementById("pwd").focus();
+                    }
+
+                    if (Character.isLowercase(ch)) 
+                    {
+                        lowerLetter = true; 
+
+                    }
+                    else if (lowerLetter == "false")
+                    {
+                        messageSpanElement.textContent = "Invalid password: does not contain a lowercase character";
+                        document.getElementById("pwd").focus();
+                    }
+                }
             }
         }
 
-        const lowChecker = (el) => 
-        {
-            const messageSpanElement = document.querySelector('#messages');
-            if (el.value != el.value.isLowerCase())
-            {
-                messageSpanElement.textContent = "Invalid password: Does not contain a lowercase character";
-                document.getElementById("pwd").focus();
-            }
-        }
+        
+        // const upChecker = (el) => 
+        // {
+        //     const messageSpanElement = document.querySelector('#messages');
+        //     if (el.value != el.value.isUpperCase())
+        //     {
+        //         messageSpanElement.textContent = "Invalid password: Does not contain an uppercase character";
+        //         document.getElementById("pwd").focus();
+        //     }
+        // }
 
-        const numChecker = (el) =>
-        {
-            const messageSpanElement = document.querySelector('#messages');
+        // const lowChecker = (el) => 
+        // {
+        //     const messageSpanElement = document.querySelector('#messages');
+        //     if (el.value != el.value.isLowerCase())
+        //     {
+        //         messageSpanElement.textContent = "Invalid password: Does not contain a lowercase character";
+        //         document.getElementById("pwd").focus();
+        //     }
+        // }
+
+        // const numChecker = (el) =>
+        // {
+        //     const messageSpanElement = document.querySelector('#messages');
             
+        // }
+
+        const emailChecker = (el) => {
+
+            const messageSpanElement = document.querySelector('#messages');
+            var emailInput = new RegExp(/@./);
+            if (emailInput.test(messageSpanElement != emailInput)){
+                messageSpanElement.textContent = "Invalid email: an @ or . ";
+                document.getElementById("email").focus();
+            }
+            document.getElementById("email").focus();
+        }
+
+
+        const phoneChecker = (el) =>
+        {
+            const messageSpanElement = document.querySelector('#messages');
+            var phoneNumber = /^\(?([0-9]{3})/)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+            if ((el.phoneChecker.value.match(phoneNumber)))
+            {}
+            else
+            {
+                messageSpanElement.textContent = "Invalid phone number: phone number does not match required format";
+                document.getElementById("pwd").focus();
+            }
+
+        }
+
+        const colorChecker = (el) =>
+        {
+
+        }
+
+        const urlChecker = (el) => 
+        {
+
+        }
+
+        const percentChecker = (el) =>
+        {
+
         }
 
         
